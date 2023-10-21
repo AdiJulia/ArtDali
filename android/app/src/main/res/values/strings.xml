@@ -1,3 +1,7 @@
 <resources>
+<<<<<<< HEAD
+    <string name="app_name">ArtDali_Native</string>
+=======
     <string name="app_name">ArtDali</string>
+>>>>>>> 8d63bccd43831d403de001a99456cf9ad6631847
 </resources>

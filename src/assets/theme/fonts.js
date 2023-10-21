@@ -1,0 +1,30 @@
+const fontType = {  
+    'cinzel-standart' : 'Cinzel-VariableFont_wght',
+    'cinzel-bold' : 'Cinzel-Bold',
+    'cinzel-medium' : 'Cinzel-Medium',
+    'cinzel-regular' : 'CinzelDecorative-Regular',
+    'cinzel-bold2' : 'CinzelDecorative-Bold',
+    'cinzel-black' : 'CinzelDecorative-Black',
+    'inter-inter' : 'Inter-VariableFont_slnt,wght',
+    'nunito-italic' : 'NunitoSans-Italic-VariableFont_YTLC,opsz,wdth,wght',
+    'nunito-standart' : 'NunitoSans-VariableFont_YTLC,opsz,wdth,wght',
+    'nunito-extrab' : 'NunitoSans_7pt-ExtraBold',
+    'nunito-medium' : 'NunitoSans_7pt-Medium',
+    'noto-light' : 'NotoSans-Light',
+    'noto-lightitalic' : 'NotoSans-LightItalic',
+    'noto-medium' : 'NotoSans-Medium',
+    'noto-mediumitalic' : 'NotoSans-MediumItalic',
+    'noto-regular' : 'NotoSans-Regular',
+    'noto-semibold' : 'NotoSans-SemiBold',
+    'noto-semibolditalic' : 'NotoSans-SemiBoldItalic',
+
+
+    'Pjs-ExtraLight' : 'PlusJakartaSans-ExtraLight',
+    'Pjs-Light' : 'PlusJakartaSans-Light',
+    'Pjs-Regular' : 'PlusJakartaSans-Regular',
+    'Pjs-Medium' : 'PlusJakartaSans-Medium',
+    'Pjs-SemiBold' : 'PlusJakartaSans-SemiBold',
+    'Pjs-Bold' : 'PlusJakartaSans-Bold',
+    'Pjs-ExtraBold' : 'PlusJakartaSans-ExtraBold',
+}
+export default fontType;
