@@ -25,11 +25,7 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-<<<<<<< HEAD
-target 'ArtDali_Native' do
-=======
 target 'ArtDali' do
->>>>>>> 8d63bccd43831d403de001a99456cf9ad6631847
   config = use_native_modules!
 
   # Flags change depending on the env values.
@@ -49,11 +45,7 @@ target 'ArtDali' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-<<<<<<< HEAD
-  target 'ArtDali_NativeTests' do
-=======
   target 'ArtDaliTests' do
->>>>>>> 8d63bccd43831d403de001a99456cf9ad6631847
     inherit! :complete
     # Pods for testing
   end

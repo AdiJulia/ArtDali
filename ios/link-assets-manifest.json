@@ -6,6 +6,10 @@
       "sha1": "b20d6e393a6081e270451ab06eca3d94f148e4ec"
     },
     {
+      "path": "src/assets/fonts/Cinzel-Medium.ttf",
+      "sha1": "2fa554fdbf779a1f175bec4bbd4fe0cd70e4b773"
+    },
+    {
       "path": "src/assets/fonts/Cinzel-VariableFont_wght.ttf",
       "sha1": "9feb2b3df60dede129754df7b70f5a264801115d"
     },
@@ -118,16 +122,16 @@
       "sha1": "99a4d6de5d5bf8e15d9ddcf857a2ad3e2dfde436"
     },
     {
+      "path": "src/assets/fonts/NunitoSans_7pt-Medium.ttf",
+      "sha1": "036f3dbc6e6088809d1b2b7bcb0939988ad07bf8"
+    },
+    {
       "path": "src/assets/fonts/static/Cinzel-Black.ttf",
       "sha1": "3e9caa845f82875e15b5e444f0b1a8e60aa1fde2"
     },
     {
       "path": "src/assets/fonts/static/Cinzel-ExtraBold.ttf",
       "sha1": "cf16bb3dcc1ae2247c6310371037827a55ef4cc8"
-    },
-    {
-      "path": "src/assets/fonts/static/Cinzel-Medium.ttf",
-      "sha1": "2fa554fdbf779a1f175bec4bbd4fe0cd70e4b773"
     },
     {
       "path": "src/assets/fonts/static/Cinzel-Regular.ttf",
@@ -496,10 +500,6 @@
     {
       "path": "src/assets/fonts/staticnunito/NunitoSans_7pt-LightItalic.ttf",
       "sha1": "8f11588d00566fffbf6475a7cb05c99273dbe078"
-    },
-    {
-      "path": "src/assets/fonts/staticnunito/NunitoSans_7pt-Medium.ttf",
-      "sha1": "036f3dbc6e6088809d1b2b7bcb0939988ad07bf8"
     },
     {
       "path": "src/assets/fonts/staticnunito/NunitoSans_7pt-MediumItalic.ttf",

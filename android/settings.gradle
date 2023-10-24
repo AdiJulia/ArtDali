@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-rootProject.name = 'ArtDali_Native'
-=======
 rootProject.name = 'ArtDali'
->>>>>>> 8d63bccd43831d403de001a99456cf9ad6631847
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
 include ':app'
 includeBuild('../node_modules/@react-native/gradle-plugin')

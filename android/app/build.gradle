@@ -73,15 +73,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-<<<<<<< HEAD
-    namespace "com.artdali_native"
-    defaultConfig {
-        applicationId "com.artdali_native"
-=======
     namespace "com.artdali"
     defaultConfig {
         applicationId "com.artdali"
->>>>>>> 8d63bccd43831d403de001a99456cf9ad6631847
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
