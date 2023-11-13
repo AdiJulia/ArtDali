@@ -14,7 +14,6 @@ const ProfileApp = () => {
         <Foto />
         <Favorite />
       </ScrollView>
-      <Foot />
     </View>
   );
 }
@@ -325,40 +324,6 @@ const styles = StyleSheet.create({
     color: colors.black(),
   },
 });
-
-const Foot = () => {
-  return (
-    <View style={foot.container}>
-      <TouchableOpacity style={foot.menu}>
-        <ArrowLeft3 size={24} variant='Linear' color={'black'} />
-      </TouchableOpacity>
-      <TouchableOpacity style={foot.menu}>
-        <RecordCircle size={24} variant='Linear' color={'black'} />
-      </TouchableOpacity>
-      <TouchableOpacity style={foot.menu}>
-        <Element3 size={24} variant='Linear' color={'black'} />
-      </TouchableOpacity>
-    </View>
-  );
-};
-
-const foot = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    height: 55,
-    backgroundColor: '#FFFFFF',
-    borderColor: '#DFD7BF',
-    borderWidth: 1,
-  },
-  menu: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-
 
 export default ProfileApp;
 

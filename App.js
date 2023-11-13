@@ -1,5 +1,16 @@
+// import * as React from 'react';
+// import {PaintingApp} from './src/screens/index.js';
+// export default function App() {
+//   return <PaintingApp />;
+// }
+
 import * as React from 'react';
-import {PaintingApp, ProfileApp, Home} from './src/screens/index.js';
+import { NavigationContainer } from '@react-navigation/native';
+import Router from './src/navigation/router';
 export default function App() {
-  return <PaintingApp />;
+  return (
+    <NavigationContainer>
+     <Router/>
+    </NavigationContainer>
+  );
 }

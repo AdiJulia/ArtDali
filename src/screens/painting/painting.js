@@ -3,6 +3,7 @@ import { ScrollView, Image, StyleSheet, Text, View, ImageBackground, Modal, Touc
 import { Profile, Heart, ArrowLeft3, RecordCircle, Element3, Star1 } from 'iconsax-react-native';
 import { fontType, colors } from '../../assets/theme';
 import { useState } from 'react';
+import {useNavigation} from '@react-navigation/native';
 
 const PaintingApp = () => {
   return (
@@ -15,7 +16,6 @@ const PaintingApp = () => {
       <ScrollView>
         <Deskpaint />
       </ScrollView>
-      <Foot />
     </View>
   );
 }
@@ -184,39 +184,6 @@ const deskpaint = StyleSheet.create({
     backgroundColor: colors.black(),
     elevation: 2,
     bottom: 10,
-  },
-});
-
-const Foot = () => {
-  return (
-    <View style={foot.container}>
-      <TouchableOpacity style={foot.menu}>
-        <ArrowLeft3 size={24} variant='Linear' color={'black'} />
-      </TouchableOpacity>
-      <TouchableOpacity style={foot.menu}>
-        <RecordCircle size={24} variant='Linear' color={'black'} />
-      </TouchableOpacity>
-      <TouchableOpacity style={foot.menu}>
-        <Element3 size={24} variant='Linear' color={'black'} />
-      </TouchableOpacity>
-    </View>
-  );
-};
-
-const foot = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    height: 55,
-    backgroundColor: '#FFFFFF',
-    borderColor: '#DFD7BF',
-    borderWidth: 1,
-  },
-  menu: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
 
