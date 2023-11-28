@@ -16,27 +16,27 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <View style={[styles.containeranimasi]}>
-      <Animated.View style={[{transform:[{translateY:headerY}]}]}>
-      <View style={[styles.header]}>
-        <Text style={styles.txttitle}>Welcome !!</Text>
-        <Profile color={colors.black()} variant="Linear" size={26} />
-      </View>
-      <View style={[styles.afterheader]}>
-        <Text style={styles.txtafterheader}>Feel the Art</Text>
-        <ArrowRight color={colors.black()} variant="Linear" size={26} />
-      </View>
-      </Animated.View>
+        <Animated.View style={[{ transform: [{ translateY: headerY }] }]}>
+          <View style={[styles.header]}>
+            <Text style={styles.txttitle}>Welcome !!</Text>
+            <Profile color={colors.black()} variant="Linear" size={26} />
+          </View>
+          <View style={[styles.afterheader]}>
+            <Text style={styles.txtafterheader}>Feel the Art</Text>
+            <ArrowRight color={colors.black()} variant="Linear" size={26} />
+          </View>
+        </Animated.View>
       </View>
 
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
         onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: scrollY}}}],
-          {useNativeDriver: true},
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: true },
         )}
-        contentContainerStyle={{paddingTop: 142}}>
+        contentContainerStyle={{ paddingTop: 142 }}>
         <ListPaint />
-        <ListCategory/>
+        <ListCategory />
         <ListArtist />
       </Animated.ScrollView>
       {/* <Foot /> */}
@@ -44,7 +44,7 @@ export default function Home() {
   );
 }
 
-{/* <Animated.View style={[styles.header, {transform:[{translateY:headerY}]}]}></Animated.View> */}
+{/* <Animated.View style={[styles.header, {transform:[{translateY:headerY}]}]}></Animated.View> */ }
 
 const ListPaint = () => {
   return (
@@ -684,7 +684,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.black(),
   },
-  containeranimasi:{
+  containeranimasi: {
     flex: 1,
     backgroundColor: 'grey',
     height: 52,
@@ -710,7 +710,7 @@ const styles = StyleSheet.create({
     height: 52,
     elevation: 8,
     paddingTop: 8,
-    paddingBottom: 4
+    paddingBottom: 4,
   },
   headercategories: {
     paddingHorizontal: 24,
@@ -720,7 +720,7 @@ const styles = StyleSheet.create({
     height: 52,
     elevation: 8,
     paddingTop: 8,
-    paddingBottom: 4
+    paddingBottom: 4,
   },
   txttitle: {
     fontSize: 28,

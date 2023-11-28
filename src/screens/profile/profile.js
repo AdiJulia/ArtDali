@@ -1,8 +1,9 @@
 import React from 'react';
 import { ScrollView, Image, StyleSheet, Text, View, ImageBackground, Modal, TouchableOpacity } from 'react-native';
-import { Element3, RecordCircle, ArrowLeft3 } from 'iconsax-react-native';
+import { Element3, RecordCircle, ArrowRight, AddSquare } from 'iconsax-react-native';
 import { fontType, colors } from '../../assets/theme';
 import { useState } from 'react';
+import { useNavigation } from "@react-navigation/native";
 
 const ProfileApp = () => {
   return (
@@ -104,11 +105,14 @@ const foto = StyleSheet.create({
 });
 
 const Favorite = () => {
+  const navigation = useNavigation();
   return (
     <View>
       <View style={styles.afterheader}>
         <Text style={styles.txtafterheader}>Favorite</Text>
-        {/* <ArrowRight color={colors.black()} variant="Linear" size={26} /> */}
+        <TouchableOpacity>
+          <AddSquare style={favorite.addbutton} onPress={() => navigation.navigate("addfavorite")}/>
+        </TouchableOpacity>
       </View>
       <View style={favorite.columnContainer}>
         <View style={favorite.small}>
@@ -260,6 +264,12 @@ const favorite = StyleSheet.create({
     height: '100%',
     borderRadius: 15,
   },
+  addbutton: {
+    variant: "Linear",
+    size: 26,
+    color: colors.black(),
+    marginRight: 16,
+  },
 });
 
 const styles = StyleSheet.create({
@@ -326,6 +336,4 @@ const styles = StyleSheet.create({
 });
 
 export default ProfileApp;
-
-
 

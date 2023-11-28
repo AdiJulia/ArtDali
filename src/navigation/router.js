@@ -1,8 +1,8 @@
 import React from 'react';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Home, PaintingApp, ProfileApp} from '../screens';
-import {Home2, Element3, Profile} from 'iconsax-react-native'; 
+import {AddFavorite, Home, PaintingApp, ProfileApp, SearchApp} from '../screens';
+import {Home2, Element3, Profile, SearchNormal1} from 'iconsax-react-native'; 
 import { fontType, colors } from '../assets/theme';
 
 const Tab = createBottomTabNavigator();
@@ -57,6 +57,22 @@ function MainApp() {
         }}
       />
       <Tab.Screen
+        name="SearchApp"
+        //component={Discover}
+        component={SearchApp}
+        options={{
+          tabBarLabel: 'SearchApp',
+          tabBarIcon: ({focused, color}) => (
+            <SearchNormal1
+              color={color}
+              variant={focused ? 'Outline' : 'Linear'}
+              size={24}
+            />
+          ),
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
         name="Profile"
         component={ProfileApp}
         options={{
@@ -72,6 +88,7 @@ function MainApp() {
         }}
       />
     </Tab.Navigator>
+    
   );
 }
 const Router = () => {
@@ -82,7 +99,20 @@ const Router = () => {
         component={MainApp}
         options={{headerShown: false}}
       />
+      <Stack.Screen
+        name="addfavorite"
+        component={AddFavorite}
+        options={{
+          headerShown: false,
+          animationEnabled: true,
+          animationTypeForReplace: 'pop',
+          gestureEnabled: true,
+          gestureDirection : 'horizontal',
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      />
     </Stack.Navigator>
   );
 };
+
 export default Router;
