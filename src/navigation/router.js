@@ -1,8 +1,8 @@
 import React from 'react';
-import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {AddFavorite, Home, PaintingApp, ProfileApp, SearchApp} from '../screens';
-import {Home2, Element3, Profile, SearchNormal1} from 'iconsax-react-native'; 
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { AddFavorite, EditFavorite, Home, PaintingApp, ProfileApp, SearchApp, ItemFavorite } from '../screens';
+import { Home2, Element3, Profile, SearchNormal1 } from 'iconsax-react-native';
 import { fontType, colors } from '../assets/theme';
 
 const Tab = createBottomTabNavigator();
@@ -30,7 +30,7 @@ function MainApp() {
         component={Home}
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: ({focused, color}) => (
+          tabBarIcon: ({ focused, color }) => (
             <Home2
               color={color}
               variant={focused ? 'Bold' : 'Linear'}
@@ -46,7 +46,7 @@ function MainApp() {
         component={PaintingApp}
         options={{
           tabBarLabel: 'Painting',
-          tabBarIcon: ({focused, color}) => (
+          tabBarIcon: ({ focused, color }) => (
             <Element3
               color={color}
               variant={focused ? 'Bold' : 'Linear'}
@@ -62,7 +62,7 @@ function MainApp() {
         component={SearchApp}
         options={{
           tabBarLabel: 'SearchApp',
-          tabBarIcon: ({focused, color}) => (
+          tabBarIcon: ({ focused, color }) => (
             <SearchNormal1
               color={color}
               variant={focused ? 'Outline' : 'Linear'}
@@ -77,7 +77,7 @@ function MainApp() {
         component={ProfileApp}
         options={{
           tabBarLabel: 'Profile',
-          tabBarIcon: ({focused, color}) => (
+          tabBarIcon: ({ focused, color }) => (
             <Profile
               color={color}
               variant={focused ? 'Bold' : 'Linear'}
@@ -88,7 +88,7 @@ function MainApp() {
         }}
       />
     </Tab.Navigator>
-    
+
   );
 }
 const Router = () => {
@@ -97,17 +97,29 @@ const Router = () => {
       <Stack.Screen
         name="MainApp"
         component={MainApp}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="addfavorite"
+        name="AddFavorite"
         component={AddFavorite}
         options={{
           headerShown: false,
           animationEnabled: true,
           animationTypeForReplace: 'pop',
           gestureEnabled: true,
-          gestureDirection : 'horizontal',
+          gestureDirection: 'horizontal',
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      />
+      <Stack.Screen
+        name="EditFavorite"
+        component={EditFavorite}
+        options={{
+          headerShown: false,
+          animationEnabled: true,
+          animationTypeForReplace: 'pop',
+          gestureEnabled: true,
+          gestureDirection: 'horizontal',
           ...TransitionPresets.SlideFromRightIOS,
         }}
       />

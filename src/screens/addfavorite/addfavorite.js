@@ -1,9 +1,10 @@
 import React from 'react';
-import { TextInput, ScrollView, StyleSheet, Text, View, ImageBackground, Modal, TouchableOpacity } from 'react-native';
+import { TextInput, ScrollView, StyleSheet, Text, View, ImageBackground, Modal, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Element3, RecordCircle, ArrowLeft, SearchNormal1 } from 'iconsax-react-native';
 import { fontType, colors } from '../../assets/theme';
 import { useState } from 'react';
 import { useNavigation } from "@react-navigation/native";
+import axios from 'axios';
 
 const AddFavorite = () => {
   const navigation = useNavigation();
@@ -33,14 +34,40 @@ const AddArea = () => {
     });
   };
 
+  const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
+
+  const handleUpload = async () => {
+    setLoading(true);
+    try {
+      await axios.post('https://65727de7d61ba6fcc01511a6.mockapi.io/artdaliapp/painting', {
+        title: data.title,
+        image,
+      })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      setLoading(false);
+      navigation.navigate('Profile');
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const [image, setImage] = useState(null);
+
+  
+
   return (
     <View style={addstyle.container}>
       <View style={addstyle.header}>
         <View style={addstyle.borderDashed}>
           <TextInput
             placeholder="Title"
-            //value={blogData.title}
-            onChangeText={(text) => handleChange("title", text)}
+            value={data.title}
+            onChangeText={text => handleChange('title', text)}
             placeholderTextColor={colors.grey(0.6)}
             multiline
             style={addstyle.title}
@@ -49,19 +76,24 @@ const AddArea = () => {
         <View style={addstyle.borderDashed}>
           <TextInput
             placeholder="Image"
-            //value={blogData.title}
-            onChangeText={(image) => handleChange("title", image)}
+            value={image}
+            onChangeText={(text) => setImage(text)}
             placeholderTextColor={colors.grey(0.6)}
-            multiline
+
             style={addstyle.title}
           />
         </View>
       </View>
       <View style={styles.bottomBar}>
-          <TouchableOpacity style={styles.button} onPress={() => { }}>
-            <Text style={styles.buttonLabel}>Add</Text>
-          </TouchableOpacity>
-        </View>
+        {loading && (
+          <View style={styles.loadingOverlay}>
+            <ActivityIndicator size="large" color={colors.blue()} />
+          </View>
+        )}
+        <TouchableOpacity style={styles.button} onPress={handleUpload}>
+          <Text style={styles.buttontext}>Add</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -109,6 +141,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white(),
+  },
+  loadingOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: colors.white(0.4),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   containertitle: {
     paddingHorizontal: 24,
@@ -178,7 +220,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  buttonLabel: {
+  buttontext: {
     fontSize: 16,
     fontFamily: fontType["inter-inter"],
     color: colors.white(),

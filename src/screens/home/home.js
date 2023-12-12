@@ -5,13 +5,6 @@ import { fontType, colors } from '../../assets/theme';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-const scrollY = useRef(new Animated.Value(0)).current;
-const diffClampY = Animated.diffClamp(scrollY, 0, 122);
-const headerY = diffClampY.interpolate({
-  inputRange: [0, 52],
-  outputRange: [0, -52],
-});
-
 export default function Home() {
   return (
     <View style={styles.container}>
@@ -43,6 +36,14 @@ export default function Home() {
     </View>
   );
 }
+
+const scrollY = useRef(new Animated.Value(0)).current;
+const diffClampY = Animated.diffClamp(scrollY, 0, 122);
+const headerY = diffClampY.interpolate({
+  inputRange: [0, 52],
+  outputRange: [0, -52],
+});
+
 
 {/* <Animated.View style={[styles.header, {transform:[{translateY:headerY}]}]}></Animated.View> */ }
 
@@ -181,7 +182,7 @@ const ListCategory = () => {
         <CategoryItems label="Indonesian" />
         <CategoryItems label="Abstract" />
         <View style={{ marginRight: 20 }}>
-          <CategoryItems label="Surealism" />
+          <CategoryItems label="hehe" />
         </View>
       </ScrollView>
     </View>
