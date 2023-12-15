@@ -1,103 +1,197 @@
 import React from 'react';
-import { TextInput, ScrollView, StyleSheet, Text, View, ImageBackground, Modal, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Element3, RecordCircle, ArrowLeft, SearchNormal1 } from 'iconsax-react-native';
+import { TextInput, StyleSheet, Text, blogData, View, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { AddSquare, ArrowLeft, Add } from 'iconsax-react-native';
 import { fontType, colors } from '../../assets/theme';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigation } from "@react-navigation/native";
-import axios from 'axios';
+import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
+import FastImage from 'react-native-fast-image';
+import ImagePicker from 'react-native-image-crop-picker';
 
 
 const EditFavorite = ({ route }) => {
     const navigation = useNavigation();
     const { blogId } = route.params;
-    const [data, setdata] = useState({
+
+    const [blogData, setBlogdata] = useState({
         title: '',
         image: '',
     });
+
+    const [selectedPaint, setSelectedPaint] = useState(null);
+    const [image, setImage] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [oldImage, setOldImage] = useState(null);
+
     const handleChange = (key, value) => {
-        setdata({
-            ...data,
+        setBlogdata({
+            ...blogData,
             [key]: value,
         });
     };
 
-    const [image, setImage] = useState(null);
-    const [loading, setLoading] = useState(true);
     useEffect(() => {
-        getBlogById();
+        const subscriber = firestore()
+            .collection('paint')
+            .doc(blogId)
+            .onSnapshot(documentSnapshot => {
+                const blogData = documentSnapshot.data();
+                if (blogData) {
+                    console.log('Paint data: ', blogData);
+                    setBlogdata({
+                        title: blogData.title,
+                    });
+                    setOldImage(blogData.image);
+                    setImage(blogData.image);
+                    setLoading(false);
+                } else {
+                    console.log(`Paint with ID ${blogId} not found.`);
+                }
+            });
+        setLoading(false);
+        return () => subscriber();
     }, [blogId]);
 
-    const getBlogById = async () => {
-        try {
-            const response = await axios.get(
-                `https://65727de7d61ba6fcc01511a6.mockapi.io/artdaliapp/painting/${blogId}`,
-            );
-            setdata({
-                title: response.data.title,
+    const handleImagePick = async () => {
+        ImagePicker.openPicker({
+            width: 1920,
+            height: 1080,
+            cropping: true,
+        })
+            .then(image => {
+                console.log(image);
+                setImage(image.path);
             })
-            setImage(response.data.image)
+            .catch(error => {
+                console.log(error);
+            });
+    };
+
+    const handleUpdate = async () => {
+        setLoading(true);
+        let filename = image.substring(image.lastIndexOf('/') + 1);
+        const extension = filename.split('.').pop();
+        const name = filename.split('.').slice(0, -1).join('.');
+        filename = name + Date.now() + '.' + extension;
+        const reference = storage().ref(`blogimages/${filename}`);
+        try {
+            if (image !== oldImage && oldImage) {
+                const oldImageRef = storage().refFromURL(oldImage);
+                await oldImageRef.delete();
+            }
+            if (image !== oldImage) {
+                await reference.putFile(image);
+            }
+            const url =
+                image !== oldImage ? await reference.getDownloadURL() : oldImage;
+            await firestore().collection('paint').doc(blogId).update({
+                title: blogData.title,
+                image: url,
+            });
             setLoading(false);
+            console.log('Paint Updated!');
+            navigation.navigate('Profile', { blogId });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleDelete = async () => {
+        setLoading(true);
+        try {
+            await firestore()
+                .collection('paint')
+                .doc(blogId)
+                .delete()
+                .then(() => {
+                    console.log('Paint deleted!');
+                });
+            if (selectedPaint?.image) {
+                const imageRef = storage().refFromURL(selectedPaint?.image);
+                await imageRef.delete();
+            }
+            console.log('Paint deleted!');
+            setSelectedPaint(null);
+            setLoading(false)
+            navigation.navigate('Profile');
         } catch (error) {
             console.error(error);
         }
     };
-    const handleUpdate = async () => {
-        setLoading(true);
-        try {
-            await axios
-                .put(`https://65727de7d61ba6fcc01511a6.mockapi.io/artdaliapp/painting/${blogId}`, {
-                    title: data.title,
-                    image,
-                })
-                .then(function (response) {
-                    console.log(response);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            setLoading(false);
-            navigation.navigate('Profile');
-        } catch (e) {
-            console.log(e);
-        }
-    };
-    const handleDelete = async () => {
-        await axios.delete(`https://65727de7d61ba6fcc01511a6.mockapi.io/artdaliapp/painting/${blogId}`)
-            .then(() => {
-                navigation.navigate('Profile');
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }
+
     return (
         <View style={addstyle.container}>
             <View style={styles.containertitle}>
                 <ArrowLeft color='black' size={24} onPress={() => navigation.navigate("Profile")} />
                 <Text style={styles.txttitle}>EditFavorite</Text>
             </View>
-            <View style={addstyle.header}>
-                <View style={addstyle.borderDashed}>
-                    <TextInput
-                        placeholder="Title"
-                        value={data.title}
-                        onChangeText={text => handleChange('title', text)}
-                        placeholderTextColor={colors.grey(0.6)}
-                        multiline
-                        style={addstyle.title}
-                    />
+            <ScrollView>
+                <View style={addstyle.header}>
+                    <View style={addstyle.borderDashed}>
+                        <TextInput
+                            placeholder="Title"
+                            value={blogData.title}
+                            onChangeText={text => handleChange('title', text)}
+                            placeholderTextColor={colors.grey(0.6)}
+                            multiline
+                            style={addstyle.title}
+                        />
+                    </View>
+                    {image ? (
+                        <View style={{ position: 'relative' }}>
+                            <FastImage
+                                style={{ width: '100%', height: 127, borderRadius: 5 }}
+                                source={{
+                                    uri: image,
+                                    headers: { Authorization: 'someAuthToken' },
+                                    priority: FastImage.priority.high,
+                                }}
+                                resizeMode={FastImage.resizeMode.cover}
+                            />
+                            <TouchableOpacity
+                                style={{
+                                    position: 'absolute',
+                                    top: -5,
+                                    right: -5,
+                                    backgroundColor: colors.blue(),
+                                    borderRadius: 25,
+                                }}
+                                onPress={() => setImage(null)}>
+                                <Add
+                                    size={20}
+                                    variant="Linear"
+                                    color={colors.white()}
+                                    style={{ transform: [{ rotate: '45deg' }] }}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    ) : (
+                        <TouchableOpacity onPress={handleImagePick}>
+                            <View
+                                style={[
+                                    addstyle.borderDashed,
+                                    {
+                                        gap: 10,
+                                        paddingVertical: 30,
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    },
+                                ]}>
+                                <AddSquare color={colors.grey(0.6)} variant="Linear" size={42} />
+                                <Text
+                                    style={{
+                                        fontFamily: fontType['nunito-standart'],
+                                        fontSize: 12,
+                                        color: colors.grey(0.6),
+                                    }}>
+                                    Upload Thumbnail
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    )}
                 </View>
-                <View style={addstyle.borderDashed}>
-                    <TextInput
-                        placeholder="Image"
-                        value={image}
-                        onChangeText={(text) => setImage(text)}
-                        placeholderTextColor={colors.grey(0.6)}
-
-                        style={addstyle.title}
-                    />
-                </View>
-            </View>
+            </ScrollView>
             <View style={styles.bottomBar}>
                 {loading && (
                     <View style={styles.loadingOverlay}>

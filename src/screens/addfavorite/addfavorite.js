@@ -1,10 +1,13 @@
 import React from 'react';
-import { TextInput, ScrollView, StyleSheet, Text, View, ImageBackground, Modal, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Element3, RecordCircle, ArrowLeft, SearchNormal1 } from 'iconsax-react-native';
+import { TextInput, ScrollView, StyleSheet, Text, View, ImageBackground, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Add, AddSquare, ArrowLeft, SearchNormal1 } from 'iconsax-react-native';
 import { fontType, colors } from '../../assets/theme';
 import { useState } from 'react';
 import { useNavigation } from "@react-navigation/native";
-import axios from 'axios';
+import FastImage from 'react-native-fast-image';
+import ImagePicker from 'react-native-image-crop-picker';
+import storage from '@react-native-firebase/storage';
+import firestore from '@react-native-firebase/firestore';
 
 const AddFavorite = () => {
   const navigation = useNavigation();
@@ -24,41 +27,58 @@ const AddFavorite = () => {
 }
 
 const AddArea = () => {
-  const [data, setdata] = useState({
-    title: "",
-  });
-  const handleChange = (key, value) => {
-    setdata({
-      ...data,
-      [key]: value,
-    });
+  const handleImagePick = async () => {
+    ImagePicker.openPicker({
+      width: 1920,
+      height: 1080,
+      cropping: true,
+    })
+      .then(image => {
+        console.log(image);
+        setImage(image.path);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const handleUpload = async () => {
+    let filename = image.substring(image.lastIndexOf('/') + 1);
+    const extension = filename.split('.').pop();
+    const name = filename.split('.').slice(0, -1).join('.');
+    filename = name + Date.now() + '.' + extension;
+    const reference = storage().ref(`paint/${filename}`);
+
+    setLoading(true);
+    try {
+      await reference.putFile(image);
+      const url = await reference.getDownloadURL();
+      await firestore().collection('paint').add({
+        title: blogData.title,
+        image: url,
+      });
+      setLoading(false);
+      console.log('Blog added!');
+      navigation.navigate('Profile');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
-
-  const handleUpload = async () => {
-    setLoading(true);
-    try {
-      await axios.post('https://65727de7d61ba6fcc01511a6.mockapi.io/artdaliapp/painting', {
-        title: data.title,
-        image,
-      })
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      setLoading(false);
-      navigation.navigate('Profile');
-    } catch (e) {
-      console.log(e);
-    }
-  };
   const [image, setImage] = useState(null);
 
-  
+  const [blogData, setBlogData] = useState({
+    title: '',
+    image: '',
+  });
+  const handleChange = (key, value) => {
+    setBlogData({
+      ...blogData,
+      [key]: value,
+    });
+  };
 
   return (
     <View style={addstyle.container}>
@@ -66,33 +86,77 @@ const AddArea = () => {
         <View style={addstyle.borderDashed}>
           <TextInput
             placeholder="Title"
-            value={data.title}
+            value={blogData.title}
             onChangeText={text => handleChange('title', text)}
             placeholderTextColor={colors.grey(0.6)}
             multiline
             style={addstyle.title}
           />
         </View>
-        <View style={addstyle.borderDashed}>
-          <TextInput
-            placeholder="Image"
-            value={image}
-            onChangeText={(text) => setImage(text)}
-            placeholderTextColor={colors.grey(0.6)}
+        {image ? (
+          <View style={{ position: 'relative' }}>
+            <FastImage
+              style={{ width: '100%', height: 127, borderRadius: 5 }}
+              source={{
+                uri: image,
+                headers: { Authorization: 'someAuthToken' },
+                priority: FastImage.priority.high,
+              }}
+              resizeMode={FastImage.resizeMode.cover}
+            />
 
-            style={addstyle.title}
-          />
-        </View>
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                top: -5,
+                right: -100,
+                backgroundColor: colors.blue(),
+                borderRadius: 25,
+              }}
+              onPress={() => setImage(null)}>
+              <Add
+                size={20}
+                variant="Linear"
+                color={colors.white()}
+                style={{ transform: [{ rotate: '45deg' }] }}
+              />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <TouchableOpacity onPress={handleImagePick}>
+            <View
+              style={[
+                addstyle.borderDashed,
+                {
+                  gap: 10,
+                  paddingVertical: 30,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: 350
+                },
+              ]}>
+              <AddSquare color={colors.grey(0.6)} variant="Linear" size={42} />
+              <Text
+                style={{
+                  fontFamily: fontType['noto-regular'],
+                  fontSize: 12,
+                  color: colors.grey(0.6),
+                }}>
+                Select Paint
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )}
       </View>
       <View style={styles.bottomBar}>
+        <TouchableOpacity style={styles.button} onPress={handleUpload}>
+          <Text style={styles.buttontext}>Add</Text>
+        </TouchableOpacity>
         {loading && (
           <View style={styles.loadingOverlay}>
             <ActivityIndicator size="large" color={colors.blue()} />
           </View>
         )}
-        <TouchableOpacity style={styles.button} onPress={handleUpload}>
-          <Text style={styles.buttontext}>Add</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -108,14 +172,14 @@ const addstyle = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.white(),
-    height: 170,
+    height: 250,
     paddingHorizontal: 0,
     marginBottom: 15,
-    marginTop: -10,
+    marginTop: -30,
   },
   borderDashed: {
     borderStyle: "dashed",
-    marginTop: 20,
+    marginTop: 10,
     borderWidth: 1,
     borderRadius: 5,
     padding: 10,
@@ -175,7 +239,7 @@ const styles = StyleSheet.create({
     fontFamily: fontType['inter-inter'],
     color: colors.black(),
     textAlign: 'left',
-    marginBottom: 10,
+    marginBottom: 30,
     marginLeft: 23,
   },
   line: {
@@ -188,23 +252,6 @@ const styles = StyleSheet.create({
     elevation: 3,
     marginBottom: 10,
     marginLeft: 20,
-  },
-  floatingButton: {
-    backgroundColor: colors.blue(),
-    padding: 15,
-    position: 'absolute',
-    bottom: 24,
-    right: 24,
-    borderRadius: 10,
-    shadowColor: colors.blue(),
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-
-    elevation: 8,
   },
   bottomBar: {
     backgroundColor: colors.white(),

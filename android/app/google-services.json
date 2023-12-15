@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "147415854925",
+    "project_id": "artdali4",
+    "storage_bucket": "artdali4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:147415854925:android:a41c8b1a7c59bd577f5104",
+        "android_client_info": {
+          "package_name": "com.artdali4"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIZ9d4Sfyhi3f8HoU0_h52InDM62Tu4FQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

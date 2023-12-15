@@ -2,9 +2,10 @@ import React from 'react';
 import { ScrollView, Image, StyleSheet, Text, View, ActivityIndicator, Modal, TouchableOpacity } from 'react-native';
 import { Element3, RecordCircle, ArrowRight, AddSquare } from 'iconsax-react-native';
 import { fontType, colors } from '../../assets/theme';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import axios from 'axios';
+import firestore from '@react-native-firebase/firestore';
+import {formatNumber} from '../../utils/formatNumber';
 import { ItemFavorite } from '../itemfavorite.js/itemfavorite';
 
 const ProfileApp = () => {
@@ -13,34 +14,68 @@ const ProfileApp = () => {
   // });
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
-  const [data, setdata] = useState({
-    title:"",
-  });
+  const [data, setdata] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-  const getDataBlog = async () => {
-    try {
-      const response = await axios.get(
-        'https://65727de7d61ba6fcc01511a6.mockapi.io/artdaliapp/painting',
-      );
-      setdata(response.data);
-      setLoading(false)
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection('paint')
+      .onSnapshot(querySnapshot => {
+        const paints = [];
+        querySnapshot.forEach(documentSnapshot => {
+          paints.push({
+            ...documentSnapshot.data(),
+            id: documentSnapshot.id,
+          });
+        });
+        setdata(paints);
+        setLoading(false);
+      });
+    return () => subscriber();
+  }, []);
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
-      getDataBlog()
+      firestore()
+        .collection('paint')
+        .onSnapshot(querySnapshot => {
+          const paints = [];
+          querySnapshot.forEach(documentSnapshot => {
+            paints.push({
+              ...documentSnapshot.data(),
+              id: documentSnapshot.id,
+            });
+          });
+          setdata(paints);
+        });
       setRefreshing(false);
     }, 1500);
   }, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      getDataBlog();
-    }, [])
-  );
+  // const getDataBlog = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       'https://65727de7d61ba6fcc01511a6.mockapi.io/artdaliapp/painting',
+  //     );
+  //     setdata(response.data);
+  //     setLoading(false)
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+  // const onRefresh = useCallback(() => {
+  //   setRefreshing(true);
+  //   setTimeout(() => {
+  //     getDataBlog()
+  //     setRefreshing(false);
+  //   }, 1500);
+  // }, []);
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     getDataBlog();
+  //   }, [])
+  // );
 
 
   return (
