@@ -5,4 +5,6 @@ import SearchApp from "./search/search.js";
 import AddFavorite from "./addfavorite/addfavorite.js"; 
 import { ItemFavorite } from "./itemfavorite.js/itemfavorite.js";
 import EditFavorite from "./editfavorite/editfavorite.js"; 
-export {Home, PaintingApp, ProfileApp, SearchApp, AddFavorite, ItemFavorite, EditFavorite}
+import Login from "./login/login.js";
+import Register from "./register/register.js";
+export {Home, Login, Register, PaintingApp, ProfileApp, SearchApp, AddFavorite, ItemFavorite, EditFavorite}

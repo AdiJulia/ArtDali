@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AddFavorite, EditFavorite, Home, PaintingApp, ProfileApp, SearchApp, ItemFavorite } from '../screens';
+import { AddFavorite, EditFavorite, Home, PaintingApp, ProfileApp, SearchApp, ItemFavorite, Login, Register } from '../screens';
 import { Home2, Element3, Profile, SearchNormal1 } from 'iconsax-react-native';
 import { fontType, colors } from '../assets/theme';
 
@@ -93,7 +93,7 @@ function MainApp() {
 }
 const Router = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="Register">
       <Stack.Screen
         name="MainApp"
         component={MainApp}
@@ -122,6 +122,16 @@ const Router = () => {
           gestureDirection: 'horizontal',
           ...TransitionPresets.SlideFromRightIOS,
         }}
+      />
+      <Stack.Screen
+        name="Register"
+        component={Register}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

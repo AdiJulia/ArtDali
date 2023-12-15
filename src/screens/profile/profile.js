@@ -5,13 +5,12 @@ import { fontType, colors } from '../../assets/theme';
 import { useState, useCallback, useEffect } from 'react';
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import firestore from '@react-native-firebase/firestore';
-import {formatNumber} from '../../utils/formatNumber';
 import { ItemFavorite } from '../itemfavorite.js/itemfavorite';
+import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ActionSheet from 'react-native-actions-sheet';
 
 const ProfileApp = () => {
-  // const [data, setdata] = useState({
-  //   title: "",
-  // });
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
   const [data, setdata] = useState([]);
